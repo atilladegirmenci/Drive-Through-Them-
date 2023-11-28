@@ -18,7 +18,6 @@ public class car_effect_script : MonoBehaviour
     [SerializeField] private float minSpeed;
     [SerializeField] private float minPitch;
     [SerializeField] private float maxPitch;
-    //private float currentSpeed;
     private float pitchFromCar;
      private AudioSource engineSound;
 
@@ -47,20 +46,47 @@ public class car_effect_script : MonoBehaviour
 
     private void TireRotate()
     {
-        foreach(GameObject t in tires)
+        float tireRotateX = 1.5f * car.velocity;
+       
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            t.transform.Rotate(new Vector3(1.5f * car.velocity, 0,0 ))  ;
-            if(car.velocity > 7 && isRotating)
+            tires[0].transform.localRotation = Quaternion.Euler(tireRotateX, -30, 0);
+            
+            tires[1].transform.localRotation = Quaternion.Euler(tireRotateX, -30, 0);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            tires[0].transform.localRotation = Quaternion.Euler(tireRotateX, 30, 0);
+
+            tires[1].transform.localRotation = Quaternion.Euler(tireRotateX, 30, 0);
+        }
+        else if(Input.GetKeyUp(KeyCode.A)|| Input.GetKeyUp(KeyCode.D))
+        {
+            tires[0].transform.localRotation = Quaternion.Euler(tireRotateX, 0, 0);
+
+            tires[1].transform.localRotation = Quaternion.Euler(tireRotateX, 0, 0);
+        }
+        else
+        {
+            foreach(GameObject t in tires)
+            {   
+                t.transform.Rotate(new Vector3(1.5f * car.velocity, 0, 0));
+            }
+        }
+        foreach (GameObject t in tires)
+        {
+            if (car.velocity > 7 && isRotating)
             {
                 Instantiate(smokeEffect, t.transform.position, transform.rotation);
             }
-           
+
         }
     }
+   
 
     void EngineSound()
     {
-       // currentSpeed = car.velocity;
+       
         pitchFromCar = car.velocity / 6f;
 
         if (car.velocity < minSpeed)
