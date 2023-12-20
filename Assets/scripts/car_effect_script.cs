@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
@@ -8,8 +9,8 @@ using static car_effect_script;
 
 public class car_effect_script : MonoBehaviour
 {
-    
-  
+
+    [SerializeField] private Transform camPos;
     public car_controlle car;
     public TrailRenderer[] tireMark;
     public GameObject[] tires;
@@ -20,6 +21,7 @@ public class car_effect_script : MonoBehaviour
     [SerializeField] private float maxPitch;
     private float pitchFromCar;
      private AudioSource engineSound;
+   // private RaycastHit buildingBetween;
 
     private bool tiremarksFlag;
 
@@ -38,7 +40,7 @@ public class car_effect_script : MonoBehaviour
         else stopEmitter();
         TireRotate();
         EngineSound();
-
+        
         if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) { isRotating = true; }
         else { isRotating = false; }
         
@@ -104,6 +106,7 @@ public class car_effect_script : MonoBehaviour
             engineSound.pitch = maxPitch;
         }
     }
+    
     private void StartEmitter()
     {
         if(tiremarksFlag) { return; }

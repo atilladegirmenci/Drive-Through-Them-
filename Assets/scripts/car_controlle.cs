@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,7 @@ public class car_controlle : MonoBehaviour
 {
     private Rigidbody rb;
     public static car_controlle instace;
+    public timer_script timer;
     
     [SerializeField] private GameObject restarttext;
     [Header("car attributes")]
@@ -15,30 +17,57 @@ public class car_controlle : MonoBehaviour
     [SerializeField] private float rotatPerSec;
     [SerializeField] public float maxSpeed;
     [SerializeField] public float velocity;
+    [SerializeField] static public bool boostReady;
+
     [Header("box cast")]
     [SerializeField] private float maxDistance;
     [SerializeField] private Vector3 boxSize;
     [SerializeField] private LayerMask ground;
+    
 
 
     void Start()
     {
+        timer = timer_script.instance;
         instace = this;
         rb = GetComponent<Rigidbody>();
+        boostReady = false;
     }
 
-    // Update is called once per frame
+
     void FixedUpdate()
     {
-       
+        
         velocity = rb.velocity.magnitude;
         CarMoveement();
-        if(!isGrounded())
-        {
-            StartCoroutine(isFlipped());
-        }
+        StartCoroutine( Boost());
+        //if(!isGrounded())
+        //{
+        //    StartCoroutine(isFlipped());
+        //}
+        
+       
     }
+    private IEnumerator Boost()
+    {
+        if (timer.combo > 1 && timer.combo % 5 == 0)
+        {
+            boostReady = true;
 
+        }
+        while (boostReady && Input.GetKeyDown(KeyCode.Space))
+        {
+            maxSpeed *= 1.5f;
+            rb.mass *= 1.3f;
+            rb.AddRelativeForce(0, 0, 10, ForceMode.Impulse);
+            boostReady = false;
+            yield return new WaitForSeconds(2);
+            maxSpeed /= 1.5f;
+            rb.mass /= 1.3f;
+            break;
+        }
+
+    }
 
     private void CarMoveement()
     {
@@ -72,6 +101,9 @@ public class car_controlle : MonoBehaviour
         }
         
     }
+
+   
+    
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -82,18 +114,18 @@ public class car_controlle : MonoBehaviour
         return (Physics.BoxCast(transform.position, boxSize, Vector3.down, transform.rotation, maxDistance, ground));
     }
 
-    private IEnumerator isFlipped()
-    {
-        yield return new WaitForSeconds(5);
-        if (!isGrounded() ) 
-        {
-            restarttext.SetActive(true);
-            if(Input.GetKey(KeyCode.Space))
-            {
-                restarttext.SetActive(false);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-        }
-        else restarttext.SetActive(false);
-    }
+    //private IEnumerator isFlipped()
+    //{
+    //    yield return new WaitForSeconds(5);
+    //    if (!isGrounded() ) 
+    //    {
+    //        restarttext.SetActive(true);
+    //        if(Input.GetKey(KeyCode.R))
+    //        {
+    //            restarttext.SetActive(false);
+    //            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    //        }
+    //    }
+    //    else restarttext.SetActive(false);
+    //}
 }

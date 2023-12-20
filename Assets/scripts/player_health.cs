@@ -6,17 +6,18 @@ using UnityEngine.UI;
 
 public class player_health : MonoBehaviour
 {
-    [SerializeField] private int maxHealth;
-    [SerializeField] private float currentHealth;
-    public Image healthBar;
-    public GameObject gothitScreen;
+    [SerializeField] public int maxHealth;
+    [SerializeField] public float currentHealth;
+    [SerializeField] private Image healthBar;
+    [SerializeField] private GameObject gothitScreen;
+    public static player_health instance;
     
     
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        instance = this;
         currentHealth = maxHealth;
     }
 

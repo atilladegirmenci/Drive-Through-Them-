@@ -55,7 +55,7 @@ public class enemy_script : MonoBehaviour
             
             timer.ResetTimer();
             timer.score++;
-            timer.combo += 10;
+            timer.combo += 1;
 
             CM_shake.instance.shakeCamera(1.3f,0.2f);
             Instantiate(deathParticle, transform.position, transform.rotation);
