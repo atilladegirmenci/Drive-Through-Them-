@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class enemy_script : MonoBehaviour
@@ -7,11 +8,9 @@ public class enemy_script : MonoBehaviour
     [SerializeField] private float enemySpeed;
     public static enemy_script instance;
     private car_controlle player;
-    private player_health playerHealth;
-    private timer_script timer;
     private bool isHit;
     private Rigidbody rb;
-    public bool hasCollided;
+    public bool isDead;
     [SerializeField] private ParticleSystem deathParticle;
     [SerializeField] private float enemyDamage;
     [SerializeField] private AudioSource getHitSound;
@@ -19,15 +18,16 @@ public class enemy_script : MonoBehaviour
     
     void Start()
     {
-        instance = this;
-        hasCollided = false;
-        timer = timer_script.instance;
         rb = GetComponent<Rigidbody>();
+
+        instance = this;
+        isDead = false;  
+        
         isHit = false;
-        playerHealth = (player_health)FindAnyObjectByType(typeof(player_health));
-        player = (car_controlle)FindAnyObjectByType(typeof(car_controlle));
+
         rb.freezeRotation = true;
-       
+
+        player = (car_controlle)FindAnyObjectByType(typeof(car_controlle));
     }
 
     void Update()
@@ -42,41 +42,47 @@ public class enemy_script : MonoBehaviour
         {
             isHit = true;
            
-            if(!hasCollided) { StartCoroutine(DestroyEnemy()); } 
+            if(!isDead) { OnContact(); } 
             
         }
     }
-    private IEnumerator DestroyEnemy()
+    private void OnContact()
     {
-        if (isHit&&  player.velocity >6)
+        if (isHit &&  player.velocity >6)
         {
-            hasCollided = true;
-            rb.freezeRotation = false;
-            
-            timer.ResetTimer();
-            timer.score++;
-            timer.combo += 1;
-
-            CM_shake.instance.shakeCamera(1.3f,0.2f);
-            Instantiate(deathParticle, transform.position, transform.rotation);
-
-            getHitSound.Play();
-            
-            yield return new  WaitForSeconds(2);
-            
-            Destroy(gameObject);
-            isHit = false;
+            Die();
         }
         else if(player.velocity <3.5)
         {
-            playerHealth.TakeDamage(enemyDamage);
-            gameObject.GetComponent<Rigidbody>().AddRelativeForce(0, 0, -25);
-            carDamageSound.Play();  
-            yield return new WaitForSeconds(0.5f);
-            isHit = false;
-            
+            StartCoroutine(HitPlayer());
         }
         else  isHit = false;
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        rb.freezeRotation = false;
+
+        timer_script.instance.OnEnemyKilled();
+
+        CM_shake.instance.shakeCamera(1.3f, 0.2f);
+
+        player.BoostCheck();
+
+        Instantiate(deathParticle, transform.position, transform.rotation);
+
+        getHitSound.Play();
+
+        Destroy(gameObject,2);
+    }
+    private IEnumerator HitPlayer()
+    {
+        player_health.instance.TakeDamage(enemyDamage);
+        gameObject.GetComponent<Rigidbody>().AddRelativeForce(0, 0, -25);
+        carDamageSound.Play();
+        yield return new WaitForSeconds(0.5f);
+        isHit = false;
     }
     private void FollowTarget()
     {     

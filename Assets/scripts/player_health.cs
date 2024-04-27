@@ -13,6 +13,7 @@ public class player_health : MonoBehaviour
     public static player_health instance;
     
     
+    
 
     // Start is called before the first frame update
     void Start()
@@ -25,11 +26,13 @@ public class player_health : MonoBehaviour
     void Update()
     {
         healthBar.fillAmount = Mathf.Clamp(currentHealth / maxHealth, 0.0f, 1.0f);
+
         if (currentHealth <= 0)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        if(gothitScreen.GetComponent<Image>().color.a > 0) 
+
+        if (gothitScreen.GetComponent<Image>().color.a > 0)
         {
             var color = gothitScreen.GetComponent<Image>().color;
             color.a -= 0.01f;
@@ -40,11 +43,12 @@ public class player_health : MonoBehaviour
     
     public void TakeDamage(float damage)
     {
-        var color = gothitScreen.GetComponent<Image>().color ;
+        var color = gothitScreen.GetComponent<Image>().color;
+        color = Color.red;
         color.a = 0.6f;
         gothitScreen.GetComponent<Image>().color = color;
+
         currentHealth -= damage;
-       
     }
 
    

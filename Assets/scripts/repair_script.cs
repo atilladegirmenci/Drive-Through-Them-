@@ -28,8 +28,7 @@ public class repair_script : MonoBehaviour
     
 
     private void RepairCar()
-    {
-        
+    {   
         if(PlayerHealth.currentHealth != PlayerHealth.maxHealth)
         {
             spawner.isSpawned = false;

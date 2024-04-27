@@ -23,8 +23,6 @@ public class spawner_script : MonoBehaviour
     
     void Start()
     {
-        
-        
         resetSpawnCooldwn = EnemySpawnCooldown;
     }
 
@@ -32,8 +30,6 @@ public class spawner_script : MonoBehaviour
     void Update()
     {
         SpawnEnenmy();
-        
-
     }
     private void SpawnEnenmy()
     {
@@ -58,8 +54,6 @@ public class spawner_script : MonoBehaviour
         {
             
             case spawnPointLocEnum.left:
-               
-
                 x = Random.Range(-29, 30);
                 return new Vector3(x, 0.5f, 29);
                 
@@ -82,12 +76,8 @@ public class spawner_script : MonoBehaviour
                 return new Vector3(0, 0, 0);
 
 
-
         }
-       
-
 
     }
-  
     
 }

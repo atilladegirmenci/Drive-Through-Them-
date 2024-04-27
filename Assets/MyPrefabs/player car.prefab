@@ -56,6 +56,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46441342b3bacf84b8ba41708d1ef3ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effect: {fileID: 0}
+  timer: {fileID: 0}
   restarttext: {fileID: 0}
   thrust: 0.6
   rotatPerSec: 80
@@ -78,12 +80,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e5eae78a4c11b4eb9e8d50cc9cca7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  car: {fileID: 0}
+  t: 0
   startTime: 30
   currentTime: 0
   timeBar: {fileID: 0}
   score: 0
   scoreText: {fileID: 0}
   highScoreText: {fileID: 0}
+  combo: 0
+  comboBar: {fileID: 0}
+  comboTimerBar: {fileID: 0}
+  comboText: {fileID: 0}
+  comboResetTime: 0
+  boostradyImage: {fileID: 0}
 --- !u!114 &804231830992831637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f963d3b65f321bb4eb866427edd1d5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camPos: {fileID: 0}
+  boostEffect: {fileID: 3193228548980495501, guid: 56499afd61bd3d8468e8365eac24b8c7, type: 3}
   car: {fileID: 0}
   tireMark:
   - {fileID: 5676516599227896221}
@@ -127,7 +139,6 @@ MonoBehaviour:
   minSpeed: 0.4
   minPitch: 0.2
   maxPitch: 1
-  engineSound: {fileID: 4216465723153768794}
 --- !u!54 &5051268735366900199
 Rigidbody:
   m_ObjectHideFlags: 0

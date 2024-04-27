@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class timer_script : MonoBehaviour
 {
-    public car_controlle car;
+    
     public static timer_script instance;
     [SerializeField] private float t;
     [Header("score")]
@@ -29,7 +29,6 @@ public class timer_script : MonoBehaviour
     [SerializeField] private TextMeshProUGUI comboText;
     private float comboTimer;
     [SerializeField] private float comboResetTime;
-
     [SerializeField] private GameObject boostradyImage;
     void Start()
     {
@@ -40,33 +39,33 @@ public class timer_script : MonoBehaviour
         score = 0;
         combo =0; 
         
-        
     }
 
     
     void Update()
     {
-        HighScore();
         scoreText.text = score.ToString();
         highScoreText.text = $"HS: {PlayerPrefs.GetInt("highScore", 0)}";
-        TimeBar();
-        ComboCounter();
-        
-        if(car_controlle.boostReady == true)
+
+        if (car_controlle.instace.canBoost)
         {
             boostradyImage.SetActive(true);
         }
         else boostradyImage.SetActive(false);
 
-        
-       
-
+        TimeBar();
+        ComboCounter();
     }
-    
+    public void OnEnemyKilled()
+    {
+        score++;
+        combo++;
+        ResetTimer();
+        CheckHighScore();
+    }
 
     public void ResetTimer()
     {
-       
         currentTime = startTime;
         comboTimer = comboResetTime;
     }
@@ -83,6 +82,7 @@ public class timer_script : MonoBehaviour
             comboBar.SetActive(true);
             comboTimer -= Time.deltaTime;
         }
+
         comboText.text = Convert.ToString(combo) ;
         comboTimerBar.fillAmount = Mathf.Clamp(comboTimer/comboResetTime, 0f, 1f);
     }
@@ -105,7 +105,7 @@ public class timer_script : MonoBehaviour
         }
         else currentTime -= Time.deltaTime;
     }
-    private void HighScore()
+    public void CheckHighScore()
     {
         if (score > PlayerPrefs.GetInt("highScore", 0))
         {

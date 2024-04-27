@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using Unity.VisualScripting;
-using static Unity.VisualScripting.Metadata;
+
 
 public class CM_shake : MonoBehaviour
 {

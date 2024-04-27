@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class car_controlle : MonoBehaviour
 {
     private Rigidbody rb;
     public static car_controlle instace;
-    public timer_script timer;
     
     [SerializeField] private GameObject restarttext;
     [Header("car attributes")]
@@ -17,7 +16,7 @@ public class car_controlle : MonoBehaviour
     [SerializeField] private float rotatPerSec;
     [SerializeField] public float maxSpeed;
     [SerializeField] public float velocity;
-    [SerializeField] static public bool boostReady;
+    public bool canBoost;
 
     [Header("box cast")]
     [SerializeField] private float maxDistance;
@@ -28,43 +27,45 @@ public class car_controlle : MonoBehaviour
 
     void Start()
     {
-        timer = timer_script.instance;
         instace = this;
         rb = GetComponent<Rigidbody>();
-        boostReady = false;
+        canBoost = false;
     }
 
 
     void FixedUpdate()
-    {
-        
+    {    
         velocity = rb.velocity.magnitude;
+
         CarMoveement();
-        StartCoroutine( Boost());
-        //if(!isGrounded())
-        //{
-        //    StartCoroutine(isFlipped());
-        //}
-        
-       
+        StartCoroutine(Boost());
+         
+    }
+    public void BoostCheck()
+    {
+        if (timer_script.instance.combo > 1 && timer_script.instance.combo % 5 == 0)
+        {
+            canBoost = true;
+        }   
     }
     private IEnumerator Boost()
     {
-        if (timer.combo > 1 && timer.combo % 5 == 0)
+       
+        if (canBoost && Input.GetKeyDown(KeyCode.Space))
         {
-            boostReady = true;
+            StartCoroutine(car_effect_script.instance.BoostEffect());
 
-        }
-        while (boostReady && Input.GetKeyDown(KeyCode.Space))
-        {
             maxSpeed *= 1.5f;
             rb.mass *= 1.3f;
+
             rb.AddRelativeForce(0, 0, 10, ForceMode.Impulse);
-            boostReady = false;
+
+            canBoost = false;
+
             yield return new WaitForSeconds(2);
+
             maxSpeed /= 1.5f;
-            rb.mass /= 1.3f;
-            break;
+            rb.mass /= 1.3f;  
         }
 
     }
@@ -102,8 +103,6 @@ public class car_controlle : MonoBehaviour
         
     }
 
-   
-    
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityEngineInternal;
 using static car_effect_script;
@@ -11,6 +12,7 @@ public class car_effect_script : MonoBehaviour
 {
 
     [SerializeField] private Transform camPos;
+    public ParticleSystem boostEffect;
     public car_controlle car;
     public TrailRenderer[] tireMark;
     public GameObject[] tires;
@@ -20,14 +22,16 @@ public class car_effect_script : MonoBehaviour
     [SerializeField] private float minPitch;
     [SerializeField] private float maxPitch;
     private float pitchFromCar;
-     private AudioSource engineSound;
-   // private RaycastHit buildingBetween;
+    private AudioSource engineSound;
+    [SerializeField] private GameObject flashScreen;
+    private float cooldwn;
 
-    private bool tiremarksFlag;
-
+    public static car_effect_script instance;
    
     void Start()
     {
+        cooldwn = 0.05f;
+        instance = this;
         engineSound = GetComponent<AudioSource>();
     }
 
@@ -38,12 +42,14 @@ public class car_effect_script : MonoBehaviour
             StartEmitter();
         }
         else stopEmitter();
+
         TireRotate();
         EngineSound();
         
         if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) { isRotating = true; }
         else { isRotating = false; }
-        
+
+
     }
 
     private void TireRotate()
@@ -75,11 +81,21 @@ public class car_effect_script : MonoBehaviour
                 t.transform.Rotate(new Vector3(1.5f * car.velocity, 0, 0));
             }
         }
-        foreach (GameObject t in tires)
+       
+            
+        if (car.velocity > 7 && isRotating)
         {
-            if (car.velocity > 7 && isRotating)
+            if (cooldwn <= 0)
             {
-                Instantiate(smokeEffect, t.transform.position, transform.rotation);
+                foreach (GameObject t in tires)
+                {
+                    Instantiate(smokeEffect, t.transform.position, transform.rotation);
+                }
+                cooldwn = 0.05f;
+            }
+            else
+            {
+               cooldwn -= Time.deltaTime;
             }
 
         }
@@ -109,17 +125,37 @@ public class car_effect_script : MonoBehaviour
     
     private void StartEmitter()
     {
-        if(tiremarksFlag) { return; }
         
         foreach(TrailRenderer tiremark in tireMark)
         {
-            
             tiremark.emitting = true;
         }
   
     }
+    public IEnumerator BoostEffect()
+    {
+
+        var color = flashScreen.GetComponent<UnityEngine.UI.Image>().color;
+        color = Color.blue;
+        color.a = 0.6f;
+        flashScreen.GetComponent<UnityEngine.UI.Image>().color = color;
+
+        foreach (TrailRenderer tiremark in tireMark)
+        {
+            tiremark.startColor = Color.Lerp(Color.white,Color.blue,2);
+        }
+
+        yield return new WaitForSeconds(1);
+        
+        foreach (TrailRenderer tiremark in tireMark)
+        {
+            tiremark.startColor = Color.Lerp(Color.blue, Color.white, 2);   
+        }
+    }
+    
     private void stopEmitter()
     {
         foreach(TrailRenderer tiremark in tireMark) { tiremark.emitting = false;}
     }
+   
 }
