@@ -4,8 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - bullet
   - enemy
-  - Building
+  - enemy body
+  - enemy head
   layers:
   - Default
   - TransparentFX
@@ -14,10 +16,10 @@ TagManager:
   - Water
   - UI
   - ground
+  - bullet
   - player
-  - enemy
-  - repair
-  - 
+  - gun
+  - world
   - 
   - 
   - 
@@ -40,9 +42,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: foreground
-    uniqueID: 3592403131
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
