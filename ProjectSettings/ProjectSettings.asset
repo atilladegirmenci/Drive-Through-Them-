@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 24
-  productGUID: 5f52b22f2d288e94bb7bd28a49e2f94d
+  productGUID: 2ee14a60ebb1f424e9e930deb7a174c0
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: First Person Game
+  productName: Drive Through Them!
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -154,7 +154,8 @@ PlayerSettings:
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Standalone: com.DefaultCompany.Drive-Through-Them-
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -272,7 +273,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 47afceaa804888d44aa096a83c721f86, type: 3}
+      m_Icon: {fileID: 2800000, guid: 5bdf7134abfeb234687f5daa3697fefa, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -803,6 +804,7 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Collab: 0
     UNet: 1
   luminIcon:
     m_Name: 
@@ -818,10 +820,10 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 6c4845cd-072d-4d5e-be95-cb9ca09eb3bd
+  cloudProjectId: 8e4e96ce-e4f1-4cb9-ac83-5e0c63133255
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: First Person Game
+  projectName: 3d car game
   organizationId: atilla69
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
